@@ -1,0 +1,97 @@
+def row_transposition_encrypt(plaintext, key):
+    num_cols = len(key)
+    num_rows = (len(plaintext) + num_cols - 1) // num_cols
+    padded_plaintext = plaintext.ljust(num_rows * num_cols)
+    matrix = [padded_plaintext[i * num_cols:(i + 1) * num_cols] for i in range(num_rows)]
+    
+    # Validate the key to ensure it is within the range of columns
+    if any(k >= num_cols or k < 0 for k in key):
+        raise ValueError("Key contains invalid column indices.")
+    
+    key_indices = sorted(range(len(key)), key=lambda k: key[k])
+    ciphertext = ''.join(''.join(row[i] for row in matrix) for i in key_indices)
+    return ciphertext
+
+def row_transposition_decrypt(ciphertext, key):
+    num_cols = len(key)
+    num_rows = len(ciphertext) // num_cols
+    key_indices = sorted(range(len(key)), key=lambda k: key[k])
+    matrix = [''] * num_cols
+    col_length = num_rows
+    
+    # Validate the key to ensure it is within the range of columns
+    if any(k >= num_cols or k < 0 for k in key):
+        raise ValueError("Key contains invalid column indices.")
+    
+    for i, col_index in enumerate(key_indices):
+        matrix[col_index] = ciphertext[i * col_length:(i + 1) * col_length]
+    plaintext = ''.join(''.join(matrix[col][row] for col in range(num_cols)) for row in range(num_rows)).rstrip()
+    return plaintext
+
+def column_transposition_encrypt(plaintext, key):
+    num_cols = len(key)
+    num_rows = (len(plaintext) + num_cols - 1) // num_cols
+    padded_plaintext = plaintext.ljust(num_rows * num_cols)
+    matrix = [padded_plaintext[i:i + num_cols] for i in range(0, len(padded_plaintext), num_cols)]
+    key_indices = sorted(range(len(key)), key=lambda k: key[k])
+    ciphertext = ''.join(''.join(matrix[row][col] for row in range(num_rows)) for col in key_indices)
+    return ciphertext
+
+def column_transposition_decrypt(ciphertext, key):
+    num_cols = len(key)
+    num_rows = len(ciphertext) // num_cols
+    key_indices = sorted(range(len(key)), key=lambda k: key[k])
+    matrix = [''] * num_cols
+    col_length = num_rows
+    for i, col_index in enumerate(key_indices):
+        matrix[col_index] = ciphertext[i * col_length:(i + 1) * col_length]
+    plaintext = ''.join(''.join(matrix[col][row] for col in range(num_cols)) for row in range(num_rows)).rstrip()
+    return plaintext
+
+def double_transposition_encrypt(plaintext, row_key, col_key):
+    row_trans_encrypted = row_transposition_encrypt(plaintext, row_key)
+    double_encrypted = column_transposition_encrypt(row_trans_encrypted, col_key)
+    return double_encrypted
+
+def double_transposition_decrypt(ciphertext, row_key, col_key):
+    col_trans_decrypted = column_transposition_decrypt(ciphertext, col_key)
+    double_decrypted = row_transposition_decrypt(col_trans_decrypted, row_key)
+    return double_decrypted
+
+def get_key_input():
+    key = input("Enter the key (comma-separated numbers): ")
+    return [int(k) for k in key.split(',')]
+
+def main():
+    choice = input("Choose the type of transposition cipher:\n1. Row Transposition\n2. Column Transposition\n3. Double Transposition\nEnter choice (1/2/3): ")
+    plaintext = input("Enter the plaintext: ")
+    
+    if choice == '1':
+        key = get_key_input()
+        ciphertext = row_transposition_encrypt(plaintext, key)
+        print("Encrypted Text:", ciphertext)
+        decrypted_text = row_transposition_decrypt(ciphertext, key)
+        print("Decrypted Text:", decrypted_text)
+
+    elif choice == '2':
+        key = get_key_input()
+        ciphertext = column_transposition_encrypt(plaintext, key)
+        print("Encrypted Text:", ciphertext)
+        decrypted_text = column_transposition_decrypt(ciphertext, key)
+        print("Decrypted Text:", decrypted_text)
+
+    elif choice == '3':
+        print("Enter the row key:")
+        row_key = get_key_input()
+        print("Enter the column key:")
+        col_key = get_key_input()
+        ciphertext = double_transposition_encrypt(plaintext, row_key, col_key)
+        print("Encrypted Text:", ciphertext)
+        decrypted_text = double_transposition_decrypt(ciphertext, row_key, col_key)
+        print("Decrypted Text:", decrypted_text)
+
+    else:
+        print("Invalid choice! Please enter 1, 2, or 3.")
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groundwater Management</title>
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #b5cee4;
+        }
+
+        header {
+            background-color: darkgray;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        header h1 {
+            margin: 0;
+            color: black;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+
+        nav a:hover {
+            background-color: #45a049;
+        }
+
+        /* Container for content sections */
+        .container {
+            display: none;
+            padding: 20px;
+        }
+
+        .active {
+            display: block;
+        }
+
+        /* Responsive Grid for Home Page */
+        #home {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        #home img {
+            width: 100%;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        /* Form Styling */
+        form {
+            margin-top: 20px;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        form input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        footer {
+            background-color: rgb(163, 247, 255);
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            width: 100%;
+            color: rgb(19, 18, 18);
+            margin-top: 40px;
+        }
+
+        /* Game Page Styles */
+        #game .game-area {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #eef;
+            border-radius: 8px;
+        }
+
+        #game .game-area p {
+            font-weight: bold;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #home {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Groundwater Guardians</h1>
+        <nav>
+            <a onclick="showPage('home')">Home</a>
+            <a onclick="showPage('game')">Game</a>
+            <a onclick="showPage('contact')">Contact Us</a>
+            <a onclick="showPage('login')">Login</a>
+        </nav>
+    </header>
+
+    <!-- Home Section -->
+    <section id="home" class="container active">
+        <div>
+            <h2>Groundwater Conservation</h2>
+            <p>Groundwater management is crucial for ensuring the sustainability of one of the Earth's most vital resources. Groundwater serves as a critical source of drinking water, irrigation for agriculture, and support for ecosystems. However, over-extraction and pollution are leading to the depletion and contamination of this hidden resource. Effective groundwater management involves balancing usage with replenishment, preventing contamination, and promoting conservation practices like rainwater harvesting and efficient water usage. By managing groundwater responsibly, we can safeguard this essential resource for future generations, ensuring that it continues to meet the needs of people and the environment alike.</p>
+            <ul>
+                <li>What is groundwater?</li>
+                <li>Causes of groundwater pollution</li>
+                <li>How to conserve groundwater</li>
+            </ul>
+        </div>
+        <div>
+            <img src="https://www.asiapathways-adbi.org/wp-content/uploads/2022/11/groundwater.jpg" alt="Groundwater illustration" />
+            <img src="https://gumlet.assettype.com/down-to-earth%2Fimport%2Flibrary%2Flarge%2F2023-12-14%2F0.01996500_1702555387_istock-854044986.jpg?w=1024&auto=format%2Ccompress&fit=max" alt="Groundwater conservation" style="margin-top: 10px;">
+        </div>
+    </section>
+
+    <!-- Game Section -->
+    <section id="game" class="container">
+        <h2>Groundwater Conservation Game</h2>
+        <p>Test your knowledge about groundwater conservation! Answer correctly to help conserve groundwater.</p>
+        <div class="game-area">
+            <p>What is the best practice to prevent groundwater depletion?</p>
+            <button onclick="answer('correct')">Rainwater Harvesting</button>
+            <button onclick="answer('wrong')">Overuse Water Wells</button>
+            <p id="game-result"></p>
+        </div>
+    </section>
+
+    <!-- Contact Us Section -->
+    <section id="contact" class="container">
+        <h2>Contact Us</h2>
+        <form>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br>
+            <label for="message">Message:</label><br>
+            <textarea id="message" name="message" rows="5"></textarea><br>
+            <button type="submit">Send Message</button>
+        </form>
+    </section>
+
+    <!-- Login Section -->
+    <section id="login" class="container">
+        <h2>Login</h2>
+        <form onsubmit="loginUser(event)">
+            <label for="username">Username:</label>
+            <input type="text" id="username" required><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" required><br>
+            <button type="submit">Login</button>
+        </form>
+        <p id="login-result"></p>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Groundwater Guardians | Promoting Sustainable Water Usage</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        function showPage(pageId) {
+            const sections = document.querySelectorAll('.container');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            const activeSection = document.getElementById(pageId);
+            activeSection.classList.add('active');
+        }
+
+        function answer(response) {
+            const result = document.getElementById('game-result');
+            if (response === 'correct') {
+                result.textContent = 'Correct! Rainwater harvesting helps conserve groundwater.';
+                result.style.color = 'green';
+            } else {
+                result.textContent = 'Incorrect. Overuse of water wells can deplete groundwater.';
+                result.style.color = 'red';
+            }
+        }
+
+        function loginUser(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === 'user' && password === 'pass') {
+                document.getElementById('login-result').textContent = 'Login successful!';
+                document.getElementById('login-result').style.color = 'green';
+            } else {
+                document.getElementById('login-result').textContent = 'Login failed. Try again.';
+                document.getElementById('login-result').style.color = 'red';
+            }
+        }
+    </script>
+
+</body>
+</html>
+
+
